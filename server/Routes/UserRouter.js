@@ -1,6 +1,6 @@
 import express from 'express';
-import { changeUserPassword, loginUser, registerUser, updateUserProfile, deleteUserProfile } from '../Controllers/UserController.js';
-import { protect } from '../middlewares/Auth.js';
+import { changeUserPassword, deleteUserProfile, loginUser, registerUser, updateUserProfile, getLikedMovies, addlikedMovie, deletelikedMovies, getUsers, deleteUser } from '../Controllers/UserController.js';
+import { protect, admin } from '../middlewares/Auth.js';
 
 const router = express.Router(); 
 
@@ -8,9 +8,16 @@ const router = express.Router();
 router.post("/", registerUser);
 router.post("/login", loginUser);
 
-//Provate Routes
+//PRIVATE ROUTES
 router.put("/", protect,updateUserProfile);
 router.delete("/", protect,deleteUserProfile);
 router.put("/password", protect, changeUserPassword);
+router.get("/favourites", protect, getLikedMovies);
+router.get("/favourites", protect, addLikedMovies);
+router.get("/favourites", protect, deleteLikedMovies);
+
+//ADMIN ROUTES
+router.get("/", protect, admin, getUsers);
+router.delete("/:id", protect, admin, deleteUser);
 
 export default router;
